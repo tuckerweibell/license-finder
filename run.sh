@@ -9,5 +9,5 @@ detect_os
 install_tools
 
 # Get base sbom with syft
-syft
+start_syft
 
