@@ -6,7 +6,6 @@ detect_os () {
 }
 
 prompt_os () {
-        printf '\n'; echo 'Please select OS:'; echo '----------------'; printf '\n' 
-        echo '1) alpine' ; echo '2) debian'; printf '\n'; read -p 'Enter: ' OS
-    fi
+    printf '\n'; echo 'Please select OS:'; echo '----------------'; printf '\n' 
+    echo '1) alpine' ; echo '2) debian'; printf '\n'; read -p 'Enter: ' OS
 }
