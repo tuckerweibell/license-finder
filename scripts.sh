@@ -7,3 +7,4 @@
 . 'license-finder/npm_handler.sh'
 . 'license-finder/pip_handler.sh'
 . 'license-finder/gem_handler.sh'
+. 'licnese-finder/spinner.sh'
