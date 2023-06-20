@@ -7,3 +7,7 @@ detect_os
 
 # Install required tools as needed
 install_tools
+
+# Get base sbom with syft
+syft
+

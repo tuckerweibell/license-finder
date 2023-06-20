@@ -4,6 +4,7 @@ install_tools () {
     set_existing
     if [ $OS == "alpine" ]; then alpine; fi
     if [ $OS == "debian" ]; then debian; fi
+    install_syft
 }
 
 set_existing () {
@@ -27,4 +28,8 @@ debian () {
     if [ $JQ == "n" ]; then apt install jq -y; JQ_INSTALLED="y"; fi
     if [ $RUBY == "n" ]; then apt install ruby -y; RUBY_INSTALLED="y"; fi
     if [ $CURL == "n" ]; then apt install curl -y; CURL_INSTALLED="y"; fi
+}
+
+install_syft () {
+    curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 }
