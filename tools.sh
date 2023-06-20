@@ -12,6 +12,8 @@ set_existing () {
     if jq --version &>/dev/null; then JQ="y"; else JQ="n"; fi
     if ruby --version &>/dev/null; then RUBY="y"; else RUBY="n"; fi
     if curl --version &>/dev/null; then CURL="y"; else CURL="n"; fi
+    if yarn --version &>/dev/null; then YARN="y"; else YARN="n"; fi
+    if npm --version &>/dev/null; then NPM="y"; else NPM="n"; fi
 }
 
 alpine () {
