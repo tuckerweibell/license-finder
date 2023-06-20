@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. 'licnese-finder/spinner.sh'
+. 'license-finder/spinner.sh'
 
 handle_gem() {
     if [ $RUBY == "y" ]; then

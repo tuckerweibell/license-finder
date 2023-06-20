@@ -1,5 +1,5 @@
 #!/bin/bash
-. 'licnese-finder/spinner.sh'
+. 'license-finder/spinner.sh'
 
 handle_npm() {
     if [ $NPM == "y" ]; then
