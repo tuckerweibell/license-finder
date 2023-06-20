@@ -2,4 +2,4 @@
 
 . 'license-finder/os_handler.sh'
 . 'license-finder/tools.sh'
-. 'license-finder/syft.sh'
+. 'license-finder/sbom.sh'
