@@ -14,6 +14,7 @@ set_existing () {
     if curl --version &>/dev/null; then CURL="y"; else CURL="n"; fi
     if yarn --version &>/dev/null; then YARN="y"; else YARN="n"; fi
     if npm --version &>/dev/null; then NPM="y"; else NPM="n"; fi
+    if pip --version &>/dev/null; then PIP="y"; else PIP="n"; fi
 }
 
 alpine () {
