@@ -18,6 +18,6 @@ handle_gem() {
                                     jq && echo ,; else if ! [$name == ""]; then \
                                     echo "{\"name\":\"$name\",\"version\":\"$version\",\"license\":\"$license\",\"homepage_url\":\"$homepage\"}" | \
                                     jq && echo ,; fi; fi' 2>/dev/null >> license-finder/dependencies/gem_deps.json && sed -i '$ d' license-finder/dependencies/gem_deps.json && echo "]}" >> license-finder/dependencies/gem_deps.json
-        stop_spinner
+        stop_spinner 0
     fi
 }

@@ -6,6 +6,6 @@ handle_pip() {
         start_spinner "Processing python packages..."
         pip install -U pip-licenses
         pip-licenses -u --format=json > license-finder/dependencies/python_deps.json
-        stop_spinner
+        stop_spinner 0
     fi
 }
