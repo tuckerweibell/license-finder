@@ -122,6 +122,7 @@ def parse_packages(licenses)
             res = Net::HTTP.get_response(uri)
             if res.body.include? "MIT"
                 license = "MIT"
+                url = uri
             end
         end
         if license == "NOASSERTION"
@@ -132,56 +133,74 @@ def parse_packages(licenses)
                 res = Net::HTTP.get_response(uri)
                 if res.body.include? "GNU"
                     license = "GNU"
+                    url = uri
                     puts uri
                 elsif res.body.include? "MIT"
                     license = "MIT"
+                    url = uri
                     puts uri
                 elsif res.body.include? "BSD"
                     license = "BSD"
+                    url = uri
                     puts uri
                 elsif res.body.include? "BSL"
                     license = "BSL"
+                    url = uri
                     puts uri
                 elsif res.body.include? "CC0"
                     license = "CC0"
+                    url = uri
                     puts uri
                 elsif res.body.include? "EPL"
                     license = "EPL"
+                    url = uri
                     puts uri
                 elsif res.body.include? "MPL"
                     license = "MPL"
+                    url = uri
                     puts uri
                 elsif res.body.include? "Unlicense"
                     license = "Unlicense"
+                    url = uri
                     puts uri
                 else
                     `git clone #{uri}`
                     res = `find #{name} -iname "*LICENSE*" | xargs cat | grep -E -w 'MIT|BSD|GNU|BSL|CC0|EPL|MPL|Unlicense'`
                     if res.include? "GNU"
                         license = "GNU"
+                        url = uri
                         puts uri
                     elsif res.include? "MIT"
                         license = "MIT"
+                        url = uri
                         puts uri
                     elsif res.include? "BSD"
                         license = "BSD"
+                        url = uri
                         puts uri
                     elsif res.include? "BSL"
                         license = "BSL"
+                        url = uri
                         puts uri
                     elsif res.include? "CC0"
                         license = "CC0"
+                        url = uri
                         puts uri
                     elsif res.include? "EPL"
                         license = "EPL"
+                        url = uri
                         puts uri
                     elsif res.include? "MPL"
                         license = "MPL"
+                        url = uri
                         puts uri
                     elsif res.include? "Unlicense"
                         license = "Unlicense"
                         puts uri
+                        url = uri
                     else
+                        license = "UNKOWN"
+                        url = "UNKOWN"
                     end
                 end
 
