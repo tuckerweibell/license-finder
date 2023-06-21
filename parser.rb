@@ -117,104 +117,10 @@ def parse_packages(licenses)
                 end
             end
         end
-        if license == "NOASSERTION"
-            uri = URI("https://rubygems.org/gems/#{name}")
-            res = Net::HTTP.get_response(uri)
-            if res.body.include? "MIT"
-                license = "MIT"
-                url = uri
-            end
-        end
-        if license == "NOASSERTION"
-            url = `curl https://rubygems.org/gems/#{name} | grep 'href=.*#{name}.*Source Code' | cut -d " " -f12 | cut -d '"' -f2`
-            if url.include? "http"
-                uri = URI(url.chomp)
-                puts uri
-                res = Net::HTTP.get_response(uri)
-                url = uri
-                if res.body.include? "GNU"
-                    license = "GNU"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "MIT"
-                    license = "MIT"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "BSD"
-                    license = "BSD"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "BSL"
-                    license = "BSL"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "CC0"
-                    license = "CC0"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "EPL"
-                    license = "EPL"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "MPL"
-                    license = "MPL"
-                    url = uri
-                    puts uri
-                elsif res.body.include? "Unlicense"
-                    license = "Unlicense"
-                    url = uri
-                    puts uri
-                else
-                    `git clone #{uri}`
-                    res = `find #{name} -iname "*LICENSE*" | xargs cat | grep -E -w 'MIT|BSD|GNU|BSL|CC0|EPL|MPL|Unlicense'`
-                    if res.include? "GNU"
-                        license = "GNU"
-                        url = uri
-                        `rm -r #{name}`
-                        puts uri
-                    elsif res.include? "MIT"
-                        license = "MIT"
-                        url = uri
-                        `rm -r #{name}`
-                    elsif res.include? "BSD"
-                        license = "BSD"
-                        url = uri
-                        `rm -r #{name}`
-                    elsif res.include? "BSL"
-                        license = "BSL"
-                        url = uri
-                        `rm -r #{name}`
-                    elsif res.include? "CC0"
-                        license = "CC0"
-                        url = uri
-                        puts uri
-                    elsif res.include? "EPL"
-                        license = "EPL"
-                        url = uri
-                        `rm -r #{name}`
-                    elsif res.include? "MPL"
-                        license = "MPL"
-                        url = uri
-                        `rm -r #{name}`
-                    elsif res.include? "Unlicense"
-                        license = "Unlicense"
-                        `rm -r #{name}`
-                        url = uri
-                    else
-                        license = "UNKOWN"
-                        url = "UNKOWN"
-                    end
-                end
-
-            end
-        end
-
-        if license == "NOASSERTION"
-            license = "UNKOWN"
-        end
-
-        if url == ""
-            url = "UNKOWN"
+        
+        if license == "NOASSERTION" and source.include? 'Gemfile.lock'
+            out = `./license-finder/try-ruby.sh #{name} #{url}`
+            puts out
         end
 
         hash = {"name" => "#{name}", "version" => "#{version}", "license" => "#{license}", "url" => "#{url}", "source" => "#{source}"}
