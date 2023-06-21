@@ -23,7 +23,7 @@ try_gem() {
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
-        if echo $2 | grep "http"; then echo $l; else echo "UNKOWN"; fi
+        if echo $l | grep "http"; then echo $l; else echo "UNKOWN"; fi
     fi
 }
 
