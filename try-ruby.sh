@@ -17,11 +17,11 @@ try_url() {
 }
 
 try_gem() {
-    if [ $1 == *"ezrails"* ] || [ $1 == *"ez_rails"* ] || [ $1 == *"ezcater"* ]; then 
+    if [ "$1" == *"ezrails"* ] || [ "$1" == *"ez_rails"* ] || [ "$1" == *"ezcater"* ]; then 
         l="EZCATER REPO - UNLICENSED"
         echo $l
     else
-        gem install $gem 2>/dev/null
+        gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f 2`
         SUB="http"
         if [ "$l" == *"$SUB"* ]; then echo $l; else echo "UNKOWN"; fi
