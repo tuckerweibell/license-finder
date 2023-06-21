@@ -8,7 +8,11 @@ try_github() {
         try_url
     else 
         l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
-        if ! [ -z $l ]; then echo $l; else echo "UNKOWN"; fi
+        if ! [ -z $l ]; then 
+                if echo $l | grep "View" &>/dev/null; then echo "See Github Repo"; else echo $l; fi
+            else 
+                echo "UNKOWN"
+            fi
     fi
 }
 
