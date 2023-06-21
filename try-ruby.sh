@@ -13,7 +13,7 @@ try_github() {
 #gem spec capybara_discoball homepage | cut -d " " -f 2
 try_url() {
     SUB="http"
-    if [ "$2" == *"$SUB"* ]; then echo $2; else try_gem; fi
+    if echo $2 | grep "http"; then echo $2; else try_gem; fi
 }
 
 try_gem() {
@@ -23,8 +23,7 @@ try_gem() {
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
-        SUB="http"
-        if [ "$l" == *"$SUB"* ]; then echo $l; else echo "UNKOWN"; fi
+        if echo $2 | grep "http"; then echo $l; else echo "UNKOWN"; fi
     fi
 }
 
