@@ -20,10 +20,12 @@ try_url() {
 try_gem() {
     if echo $gem | grep "ez" &>/dev/null; then 
         l="EZCATER REPO - UNLICENSED"
+        echo $l
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
         if echo $l | grep "http" &>/dev/null; then
+            echo $l
             l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
             if ! [ -z $l ]; then echo $l; else echo "UNKOWN"; fi
         else
