@@ -131,6 +131,7 @@ def parse_packages(licenses)
                 uri = URI(url.chomp)
                 puts uri
                 res = Net::HTTP.get_response(uri)
+                url = uri
                 if res.body.include? "GNU"
                     license = "GNU"
                     url = uri
@@ -169,19 +170,20 @@ def parse_packages(licenses)
                     if res.include? "GNU"
                         license = "GNU"
                         url = uri
+                        `rm -r #{name}`
                         puts uri
                     elsif res.include? "MIT"
                         license = "MIT"
                         url = uri
-                        puts uri
+                        `rm -r #{name}`
                     elsif res.include? "BSD"
                         license = "BSD"
                         url = uri
-                        puts uri
+                        `rm -r #{name}`
                     elsif res.include? "BSL"
                         license = "BSL"
                         url = uri
-                        puts uri
+                        `rm -r #{name}`
                     elsif res.include? "CC0"
                         license = "CC0"
                         url = uri
@@ -189,14 +191,14 @@ def parse_packages(licenses)
                     elsif res.include? "EPL"
                         license = "EPL"
                         url = uri
-                        puts uri
+                        `rm -r #{name}`
                     elsif res.include? "MPL"
                         license = "MPL"
                         url = uri
-                        puts uri
+                        `rm -r #{name}`
                     elsif res.include? "Unlicense"
                         license = "Unlicense"
-                        puts uri
+                        `rm -r #{name}`
                         url = uri
                     else
                         license = "UNKOWN"
@@ -207,6 +209,13 @@ def parse_packages(licenses)
             end
         end
 
+        if license == "NOASSERTION"
+            license = "UNKOWN"
+        end
+
+        if url == ""
+            url = "UNKOWN"
+        end
 
         hash = {"name" => "#{name}", "version" => "#{version}", "license" => "#{license}", "url" => "#{url}", "source" => "#{source}"}
         output << hash
