@@ -22,9 +22,9 @@ try_gem() {
         echo $l
     else
         gem install $gem &>/dev/null
-        c=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2 | wc -c`
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
-        if [ $c > 2 ]; then echo $l; else echo "UNKOWN"; fi
+        SUB="http"
+        if [ $l == *"$SUB"* ]; then echo $l; else echo "UNKOWN"; fi
     fi
 }
 
