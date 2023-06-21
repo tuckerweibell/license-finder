@@ -24,8 +24,6 @@ try_gem() {
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
-        echo $gem
-        echo $l
         if echo $l | grep "http" &>/dev/null; then
             l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
             if ! [ -z $l ]; then echo $l; else echo "UNKOWN"; fi
