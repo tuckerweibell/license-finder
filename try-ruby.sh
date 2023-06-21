@@ -17,11 +17,7 @@ try_url() {
 }
 
 try_gem() {
-    EZRAILS="ezrails"
-    EZ_RAILS="ez_rails"
-    EZCATER="EZCATER"
-    echo $gem
-    if ([ "$gem" == *"$EZRAILS"* ] || [ "$gem" == *"$EZ_RAILS"* ] || [ "$gem" == *"$EZCATER"* ]); then 
+    if echo $gem | grep "ez"; then 
         l="EZCATER REPO - UNLICENSED"
         echo $l
     else
