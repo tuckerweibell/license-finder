@@ -13,17 +13,17 @@ try_github() {
 #gem spec capybara_discoball homepage | cut -d " " -f 2
 try_url() {
     SUB="http"
-    if echo $2 | grep "http"; then echo $2; else try_gem; fi
+    if echo $2 | grep "http" &>/dev/null; then echo $2; else try_gem; fi
 }
 
 try_gem() {
-    if echo $gem | grep "ez"; then 
+    if echo $gem | grep "ez" &>/dev/null; then 
         l="EZCATER REPO - UNLICENSED"
         echo $l
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
-        if echo $l | grep "http"; then echo $l; else echo "UNKOWN"; fi
+        if echo $l | grep "http" &>/dev/null; then echo $l; else echo "UNKOWN"; fi
     fi
 }
 
