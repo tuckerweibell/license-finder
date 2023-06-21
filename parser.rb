@@ -1,6 +1,8 @@
 require 'csv'
 require 'json'
 require 'set'
+require 'uri'
+require 'net/http'
 
 licenses = Set.new
 
@@ -44,7 +46,7 @@ if File.exist?('license-finder/dependencies/yarn_deps.json')
 			url = url.sub("git@", "https://").sub(".com:", ".com/")
 			url = url.sub(".git", "").sub("git://", "https://").sub("git+", "")
 			temp = {"name" => name, "version" => version, "license" => license, "url" => url}
-				licenses << temp
+			licenses << temp
 		end
 	end
 
@@ -94,16 +96,113 @@ def read_data
     end
 end   
 
-def parse_packages
+def parse_packages(licenses)
+    output = []
     data = read_data
     data.each do |d|
         name = d["name"]
+        name = name.delete("@")
         version = d["versionInfo"]
         license = d["licenseDeclared"]
         source = d["sourceInfo"]
+        l = licenses.select {|l| l["name"] == "#{name}"}
+        unless l.empty?
+            url = l[0]["url"]
+            if url.include? "https://github.com/ezcater"
+                license = "EZCATER REPO - UNLICENSED"
+            end
+            if license == "NOASSERTION"
+                if l[0]["license"] != "UNKOWN"
+                    license = l[0]["license"]
+                end
+            end
+        end
+        if license == "NOASSERTION"
+            uri = URI("https://rubygems.org/gems/#{name}")
+            res = Net::HTTP.get_response(uri)
+            if res.body.include? "MIT"
+                license = "MIT"
+            end
+        end
+        if license == "NOASSERTION"
+            url = `curl https://rubygems.org/gems/#{name} | grep 'href=.*#{name}.*Source Code' | cut -d " " -f12 | cut -d '"' -f2`
+            if url.include? "http"
+                uri = URI(url.chomp)
+                puts uri
+                res = Net::HTTP.get_response(uri)
+                if res.body.include? "GNU"
+                    license = "GNU"
+                    puts uri
+                elsif res.body.include? "MIT"
+                    license = "MIT"
+                    puts uri
+                elsif res.body.include? "BSD"
+                    license = "BSD"
+                    puts uri
+                elsif res.body.include? "BSL"
+                    license = "BSL"
+                    puts uri
+                elsif res.body.include? "CC0"
+                    license = "CC0"
+                    puts uri
+                elsif res.body.include? "EPL"
+                    license = "EPL"
+                    puts uri
+                elsif res.body.include? "MPL"
+                    license = "MPL"
+                    puts uri
+                elsif res.body.include? "Unlicense"
+                    license = "Unlicense"
+                    puts uri
+                else
+                    `git clone #{uri}`
+                    res = `find #{name} -iname "*LICENSE*" | xargs cat | grep -E -w 'MIT|BSD|GNU|BSL|CC0|EPL|MPL|Unlicense'`
+                    if res.body.include? "GNU"
+                        license = "GNU"
+                        puts uri
+                    elsif res.body.include? "MIT"
+                        license = "MIT"
+                        puts uri
+                    elsif res.body.include? "BSD"
+                        license = "BSD"
+                        puts uri
+                    elsif res.body.include? "BSL"
+                        license = "BSL"
+                        puts uri
+                    elsif res.body.include? "CC0"
+                        license = "CC0"
+                        puts uri
+                    elsif res.body.include? "EPL"
+                        license = "EPL"
+                        puts uri
+                    elsif res.body.include? "MPL"
+                        license = "MPL"
+                        puts uri
+                    elsif res.body.include? "Unlicense"
+                        license = "Unlicense"
+                        puts uri
+                    else
+                    end
+                end
+
+            end
+        end
+
+
+        hash = {"name" => "#{name}", "version" => "#{version}", "license" => "#{license}", "url" => "#{url}", "source" => "#{source}"}
+        output << hash
     end
+    return output
 end
 
 
 
+output = parse_packages(licenses)
 
+headers = ["Name", "Version", "License", "Url", "Source"]
+CSV.open("licenses.csv", "w") do |csv|
+	csv << headers
+	output.each do |l|
+		csv << l.values
+	end
+end
