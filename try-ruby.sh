@@ -24,7 +24,7 @@ try_gem() {
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
         SUB="http"
-        if [ $l == *"$SUB"* ]; then echo $l; else echo "UNKOWN"; fi
+        if [ "$l" == *"$SUB"* ]; then echo $l; else echo "UNKOWN"; fi
     fi
 }
 
