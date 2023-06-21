@@ -27,7 +27,11 @@ try_gem() {
         if echo $l | grep "http" &>/dev/null; then
             echo $l
             l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
-            if ! [ -z $l ]; then echo $l; else echo "UNKOWN"; fi
+            if ! [ -z $l ]; then 
+                if [ $l == "View" ]; then echo "See Github Repo"; else echo $l; fi
+            else 
+                echo "UNKOWN"
+            fi
         else
             echo "UNKOWN"
         fi
