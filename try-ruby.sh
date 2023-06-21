@@ -4,6 +4,7 @@ gem=$1
 
 try_github() {
     l=`curl -s https://rubygems.org/gems/$gem | grep "Source Code" | cut -d '"' -f 8`
+    url=$l
     if [ -z $l ]; then 
         try_url
     else 
@@ -11,7 +12,7 @@ try_github() {
         if ! [ -z $l ]; then 
                 if echo $l | grep "View" &>/dev/null; then echo "See Github Repo"; else echo $l; fi
             else 
-                echo "UNKOWN"
+                echo "$gem - $url" >> temp.txt
             fi
     fi
 }
@@ -28,15 +29,16 @@ try_gem() {
     else
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
+        url=$l
         if echo $l | grep "http" &>/dev/null; then
             l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
             if ! [ -z $l ]; then 
                 if echo $l | grep "View" &>/dev/null; then echo "See Github Repo"; else echo $l; fi
             else 
-                echo "UNKOWN"
+                echo "$gem - $url" >> temp.txt
             fi
         else
-            echo "UNKOWN"
+            echo "$gem - "UNKOWN"" >> temp.txt
         fi
     fi
 }
@@ -48,4 +50,5 @@ if [ -z $l ]; then
     try_github
 else 
     echo $l
+    echo "$gem - https://rubygems.org/gems/$gem" >> temp.txt
 fi
