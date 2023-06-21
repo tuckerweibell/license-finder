@@ -6,7 +6,7 @@ try_github() {
     l=`curl -s https://rubygems.org/gems/$gem | grep "Source Code" | cut -d '"' -f 8`
     url=$l
     if [ -z $l ]; then 
-        try_url
+        try_gem
     else 
         l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
         if ! [ -z $l ]; then 
@@ -15,11 +15,6 @@ try_github() {
                 echo "$gem - $url" >> temp.txt
             fi
     fi
-}
-
-try_url() {
-    SUB="http"
-    if echo $2 | grep "http" &>/dev/null; then echo $2; else try_gem; fi
 }
 
 try_gem() {
@@ -38,7 +33,7 @@ try_gem() {
                 echo "$gem - $url" >> temp.txt
             fi
         else
-            echo "$gem - "UNKOWN"" >> temp.txt
+            echo "$gem - https://rubygems.org/gems/$gem" >> temp.txt
         fi
     fi
 }
