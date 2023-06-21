@@ -157,28 +157,28 @@ def parse_packages(licenses)
                 else
                     `git clone #{uri}`
                     res = `find #{name} -iname "*LICENSE*" | xargs cat | grep -E -w 'MIT|BSD|GNU|BSL|CC0|EPL|MPL|Unlicense'`
-                    if res.body.include? "GNU"
+                    if res.include? "GNU"
                         license = "GNU"
                         puts uri
-                    elsif res.body.include? "MIT"
+                    elsif res.include? "MIT"
                         license = "MIT"
                         puts uri
-                    elsif res.body.include? "BSD"
+                    elsif res.include? "BSD"
                         license = "BSD"
                         puts uri
-                    elsif res.body.include? "BSL"
+                    elsif res.include? "BSL"
                         license = "BSL"
                         puts uri
-                    elsif res.body.include? "CC0"
+                    elsif res.include? "CC0"
                         license = "CC0"
                         puts uri
-                    elsif res.body.include? "EPL"
+                    elsif res.include? "EPL"
                         license = "EPL"
                         puts uri
-                    elsif res.body.include? "MPL"
+                    elsif res.include? "MPL"
                         license = "MPL"
                         puts uri
-                    elsif res.body.include? "Unlicense"
+                    elsif res.include? "Unlicense"
                         license = "Unlicense"
                         puts uri
                     else
