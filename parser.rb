@@ -121,6 +121,8 @@ def parse_packages(licenses)
         if license == "NOASSERTION" and source.include? 'Gemfile.lock'
             out = `./license-finder/try-ruby.sh #{name} #{url}`
             license = out.chomp
+            url = `./license-finder/url_helper.sh #{name} #{url}`
+            url = url.chomp
         end
 
         hash = {"name" => "#{name}", "version" => "#{version}", "license" => "#{license}", "url" => "#{url}", "source" => "#{source}"}
