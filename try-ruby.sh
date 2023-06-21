@@ -25,10 +25,9 @@ try_gem() {
         gem install $gem &>/dev/null
         l=`gem spec $gem homepage 2>/dev/null | cut -d " " -f2`
         if echo $l | grep "http" &>/dev/null; then
-            echo $l
             l=`curl -s -L $l | grep -A10 License | grep -m1 " license" | cut -d " " -f 6`
             if ! [ -z $l ]; then 
-                if [ $l == "View" ]; then echo "See Github Repo"; else echo $l; fi
+                if echo $l | grep "View" &>/dev/null; then echo "See Github Repo"; else echo $l; fi
             else 
                 echo "UNKOWN"
             fi
